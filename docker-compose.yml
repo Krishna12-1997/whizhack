@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  # React Frontend
+  frontend:
+    image: node:16
+    working_dir: /frondend/whizhack 
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frondend/whizhack:/frondend/whizhack  
+    command: npm install && npm start
+
+  # Strapi Backend
+  backend:
+    image: strapi/strapi
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: 40.88.24.216
+      DATABASE_PORT: 5432
+      DATABASE_NAME: mydatabase
+      DATABASE_USERNAME: host
+      DATABASE_PASSWORD: mypassword
+    ports:
+      - "1337:1337"
+    volumes:
+      - ./backend:/usr/src/api
+
+  # PostgreSQL Database 
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: host
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
